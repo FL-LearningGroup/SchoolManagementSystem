@@ -8,7 +8,6 @@ import { applicationSetting } from './applicationSetting';
 const { REACT_APP_ENV } = process.env;
 
 export default defineConfig({
-  applicationSetting: applicationSetting,
   title: applicationSetting.name,
   metas: applicationSetting.metas,
   hash: true,
