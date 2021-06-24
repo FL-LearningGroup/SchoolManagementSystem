@@ -1,5 +1,6 @@
 const { uniq } = require('lodash');
 const RouterConfig = require('../../config/config').default.routes;
+import applicationSetting from '../../config/applicationSetting'
 
 const BASE_URL = `http://localhost:${process.env.PORT || 8000}`;
 
@@ -26,7 +27,7 @@ beforeEach(async () => {
   });
 });
 
-describe('Ant Design Pro E2E test', () => {
+describe(applicationSetting.name + 'E2E test', () => {
   const testPage = (path) => async () => {
     await page.goto(`${BASE_URL}${path}`);
     await page.waitForSelector('footer', {

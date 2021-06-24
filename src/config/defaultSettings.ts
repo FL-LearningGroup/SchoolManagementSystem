@@ -13,9 +13,9 @@ const proSettings: DefaultSettings = {
   fixedHeader: false,
   fixSiderbar: true,
   colorWeak: false,
-  title: 'Ant Design Pro',
+  title: 'School',
   pwa: false,
-  iconfontUrl: '',
+  iconfontUrl: 'https://github.com/FL-LearningGroup/LucasSample/blob/main/front-end/ant-design-pro/framework-analyse/src/assets/logo.svg',
 };
 
 export type { DefaultSettings };

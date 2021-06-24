@@ -3,10 +3,14 @@ import { defineConfig } from 'umi';
 import defaultSettings from './defaultSettings';
 import proxy from './proxy';
 import routes from './routes';
+import { applicationSetting } from './applicationSetting';
 
 const { REACT_APP_ENV } = process.env;
 
 export default defineConfig({
+  applicationSetting: applicationSetting,
+  title: applicationSetting.name,
+  metas: applicationSetting.metas,
   hash: true,
   antd: {},
   dva: {
@@ -34,7 +38,6 @@ export default defineConfig({
   theme: {
     'primary-color': defaultSettings.primaryColor,
   },
-  title: false,
   ignoreMomentLocale: true,
   proxy: proxy[REACT_APP_ENV || 'dev'],
   manifest: {
