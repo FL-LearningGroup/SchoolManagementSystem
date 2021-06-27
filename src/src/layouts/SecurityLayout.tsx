@@ -4,7 +4,7 @@ import type { ConnectProps } from 'umi';
 import { Redirect, connect } from 'umi';
 import { stringify } from 'querystring';
 import type { ConnectState } from '@/models/connect';
-import type { CurrentUser } from '@/models/user';
+import type { CurrentUser } from '@/models/UserViewModel';
 
 type SecurityLayoutProps = {
   loading?: boolean;

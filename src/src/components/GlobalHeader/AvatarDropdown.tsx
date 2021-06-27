@@ -4,7 +4,7 @@ import React from 'react';
 import type { ConnectProps } from 'umi';
 import { history, connect } from 'umi';
 import type { ConnectState } from '@/models/connect';
-import type { CurrentUser } from '@/models/user';
+import type { CurrentUser } from '@/models/UserViewModel';
 import HeaderDropdown from '../HeaderDropdown';
 import styles from './index.less';
 

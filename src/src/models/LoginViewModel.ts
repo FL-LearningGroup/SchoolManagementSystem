@@ -2,30 +2,27 @@ import { stringify } from 'querystring';
 import type { Reducer, Effect } from 'umi';
 import { history } from 'umi';
 
-import { fakeAccountLogin } from '@/services/login';
+import { fakeAccountLogin } from '@/services/services.login';
 import { setAuthority } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
 import { message } from 'antd';
 
-export type StateType = {
-  status?: 'ok' | 'error';
-  type?: string;
-  currentAuthority?: 'user' | 'guest' | 'admin';
-};
+import { TLoginState } from "@/modeltypes/LoginModel"
 
-export type LoginModelType = {
+
+export type TLoginViewModel = {
   namespace: string;
-  state: StateType;
+  state: TLoginState;
   effects: {
     login: Effect;
     logout: Effect;
   };
   reducers: {
-    changeLoginStatus: Reducer<StateType>;
+    changeLoginStatus: Reducer<TLoginState>;
   };
 };
 
-const Model: LoginModelType = {
+const Model: TLoginViewModel = {
   namespace: 'login',
 
   state: {
@@ -35,6 +32,7 @@ const Model: LoginModelType = {
   effects: {
     *login({ payload }, { call, put }) {
       const response = yield call(fakeAccountLogin, payload);
+      console.log(JSON.stringify(response));
       yield put({
         type: 'changeLoginStatus',
         payload: response,
@@ -83,8 +81,7 @@ const Model: LoginModelType = {
       setAuthority(payload.currentAuthority);
       return {
         ...state,
-        status: payload.status,
-        type: payload.type,
+        ...payload,
       };
     },
   },

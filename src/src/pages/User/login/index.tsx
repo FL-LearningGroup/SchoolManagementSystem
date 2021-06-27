@@ -6,17 +6,17 @@ import { Alert, Tabs } from 'antd';
 import React, { useState } from 'react';
 import ProForm, {  ProFormCheckbox, ProFormText } from '@ant-design/pro-form';
 import { useIntl, connect, FormattedMessage } from 'umi';
-import { getFakeCaptcha } from '@/services/login';
+
 import type { Dispatch } from 'umi';
-import type { StateType } from '@/models/login';
-import type { LoginParamsType } from '@/services/login';
+import type { TLoginState } from '@/modeltypes/LoginModel';
+import  { TLoginParams } from '@/modeltypes/LoginModel'
 import type { ConnectState } from '@/models/connect';
 
 import styles from './index.less';
 
 export type LoginProps = {
   dispatch: Dispatch;
-  userLogin: StateType;
+  userLogin: TLoginState;
   submitting?: boolean;
 };
 
@@ -39,7 +39,7 @@ const Login: React.FC<LoginProps> = (props) => {
   const [type, setType] = useState<string>('account');
   const intl = useIntl();
 
-  const handleSubmit = (values: LoginParamsType) => {
+  const handleSubmit = (values: TLoginParams) => {
     const { dispatch } = props;
     dispatch({
       type: 'login/login',
@@ -69,7 +69,7 @@ const Login: React.FC<LoginProps> = (props) => {
           },
         }}
         onFinish={(values) => {
-          handleSubmit(values as LoginParamsType);
+          handleSubmit(values as TLoginParams);
           return Promise.resolve();
         }}
       >

@@ -1,39 +1,26 @@
 import type { Effect, Reducer } from 'umi';
 
-import { queryCurrent, query as queryUsers } from '@/services/user';
+import { queryCurrent, query as queryUsers } from '@/services/services.user';
+import { TUser } from '@/modeltypes/UserModel';
 
-export type CurrentUser = {
-  avatar?: string;
-  name?: string;
-  title?: string;
-  group?: string;
-  signature?: string;
-  tags?: {
-    key: string;
-    label: string;
-  }[];
-  userid?: string;
-  unreadCount?: number;
+export type TUserModelState = {
+  currentUser?: TUser;
 };
 
-export type UserModelState = {
-  currentUser?: CurrentUser;
-};
-
-export type UserModelType = {
+export type TUserViewModel = {
   namespace: 'user';
-  state: UserModelState;
+  state: TUserModelState;
   effects: {
     fetch: Effect;
     fetchCurrent: Effect;
   };
   reducers: {
-    saveCurrentUser: Reducer<UserModelState>;
-    changeNotifyCount: Reducer<UserModelState>;
+    saveCurrentUser: Reducer<TUserModelState>;
+    changeNotifyCount: Reducer<TUserModelState>;
   };
 };
 
-const UserModel: UserModelType = {
+const UserModel: TUserViewModel = {
   namespace: 'user',
 
   state: {
@@ -66,7 +53,7 @@ const UserModel: UserModelType = {
     },
     changeNotifyCount(
       state = {
-        currentUser: {},
+        currentUser: undefined,
       },
       action,
     ) {
