@@ -13,5 +13,13 @@ export type TUser = {
     email?: string;
     notifyCount?: number;
     country?: string;
-    role?: string;
+    role?: UserRoleEnum;
   };
+
+  export enum UserRoleEnum {
+    Admin = 1,
+    SchoolMaster,
+    SchoolDirector,
+    Teacher,
+    Student,
+  }

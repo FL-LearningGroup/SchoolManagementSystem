@@ -1,5 +1,5 @@
 // Generate user data for test.
-import { TUser } from '@/modeltypes/UserModel';
+import { TUser, UserRoleEnum } from '@/modeltypes/UserModel';
 
 type TUserModel = TUser & {
     userName: string;
@@ -46,6 +46,6 @@ export const userList:TUserModel[] =  [
         country: 'China',
         userName: 'LucasYao',
         passsword: '123456',
-        role: 'admin'
+        role: UserRoleEnum.Admin
     }
 ];
