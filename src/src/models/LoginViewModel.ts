@@ -30,6 +30,7 @@ const Model: TLoginViewModel = {
   },
 
   effects: {
+    // Two method successfull login: U/P, Token
     *login({ payload }, { call, put }) {
       const response = yield call(fakeAccountLogin, payload);
       yield put({

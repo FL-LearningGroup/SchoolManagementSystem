@@ -1,5 +1,5 @@
 // Generate user data for test.
-import { TUser, UserRoleEnum } from '@/modeltypes/UserModel';
+import { TUser, UserRoleEnum } from '../src/modeltypes/UserModel';
 
 type TUserModel = TUser & {
     userName: string;

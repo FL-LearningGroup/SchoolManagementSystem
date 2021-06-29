@@ -10,3 +10,4 @@ export type TLoginState = {
     type?: string;
     currentAuthority?: 'user' | 'guest' | 'admin';
 };
+
