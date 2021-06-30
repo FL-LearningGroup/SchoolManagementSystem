@@ -6,19 +6,18 @@ import { Alert, Tabs } from 'antd';
 import React, { useState, useEffect } from 'react';
 import ProForm, {  ProFormCheckbox, ProFormText } from '@ant-design/pro-form';
 import { useIntl, connect, FormattedMessage } from 'umi';
-
 import type { Dispatch } from 'umi';
-import type { TLoginState } from '@/modeltypes/LoginModel';
-import  { TLoginParams } from '@/modeltypes/LoginModel'
-import type { ConnectState } from '@/models/connect';
 
-import { checkTokenData } from '@/modeltypes/TokenModel'
+import  { TLoginParams, TLoginViewModel } from '@/modeltypes/LoginModel'
+import type { ConnectState } from '@/models/connect';
+import { checkTokenData } from '@/modeltypes/TokenModel';
+import { ResponseBodyEnum } from '@/modeltypes/ResponseModel';
 
 import styles from './index.less';
 
 export type LoginProps = {
   dispatch: Dispatch;
-  userLogin: TLoginState;
+  userLogin: TLoginViewModel;
   submitting?: boolean;
 };
 
@@ -36,8 +35,8 @@ const LoginMessage: React.FC<{
 );
 
 const Login: React.FC<LoginProps> = (props) => {
-  const { userLogin = {}, submitting } = props;
-  const { status, type: loginType } = userLogin;
+  const { userLogin, submitting } = props;
+  const { status } = userLogin;
   const [type, setType] = useState<string>('account');
   const [tokenLogin, setTokenLgin] = useState<boolean>(false);
   const intl = useIntl();
@@ -96,7 +95,7 @@ const Login: React.FC<LoginProps> = (props) => {
             />
           </Tabs>
 
-          {status === 'error' && loginType === 'account' && !submitting && (
+          {status.toUpperCase() === ResponseBodyEnum.Error.toUpperCase() && !submitting && (
             <LoginMessage
               content={intl.formatMessage({
                 id: 'pages.login.accountLogin.errorMessage',

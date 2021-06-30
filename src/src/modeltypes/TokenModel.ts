@@ -7,6 +7,9 @@ export type TTokenData = {
     password: string;
     accessToken: string;
     role: UserRoleEnum; 
+    createAt: string;
+    expiredAt: string;
+
 }
 export type TToken = {
     tokenData: TTokenData[];

@@ -35,25 +35,27 @@ export default {
     },
   ],
   'POST /api/login/account': async (req: Request, res: Response) => {
-    const { password, userName, type } = req.body;
+    const { password, userName } = req.body;
     await waitTime(2000);
     userList.forEach(item => {
       if (item.userName === userName && item.passsword === password)
       {
         res.send({
-          status: 'ok',
-          type,
-          currentAuthority: item.role,
-          userName: item.userName,
-          token: '0000000-00000-0000-000000',
+          status: 'Ok',
+          message: 'login successfull.',
+          data: {
+            currentAuthority: 'SchoolMaster',
+            userName: item.userName,
+            token: '0000000-00000-0000-000000',
+          }
         });
         return;
       }
     });
     res.send({
-      status: 'error',
-      type,
-      currentAuthority: 'guest',
+      status: 'Error',
+      message: 'Login falied',
+      data: null
     });
   },
   'POST /api/register': (req: Request, res: Response) => {

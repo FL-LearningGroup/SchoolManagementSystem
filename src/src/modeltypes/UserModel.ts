@@ -17,9 +17,10 @@ export type TUser = {
   };
 
   export enum UserRoleEnum {
-    Admin = 1,
-    SchoolMaster,
-    SchoolDirector,
-    Teacher,
-    Student,
+    Admin = 'Admin',
+    SchoolMaster = 'SchoolMaster',
+    SchoolDirector = 'SchoolDirector',
+    Teacher = 'Teacher',
+    Student = 'Student',
+    None = 'None'
   }
