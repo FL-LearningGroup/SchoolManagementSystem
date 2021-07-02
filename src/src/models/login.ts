@@ -2,12 +2,10 @@ import { stringify } from 'querystring';
 import type { Reducer, Effect } from 'umi';
 import { history } from 'umi';
 
-import { fakeAccountLogin } from '@/services/services.login';
 import { setAuthority } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
-import { message } from 'antd';
 
-import { TLoginViewModel, userLoginAync } from "@/modeltypes/LoginModel"
+import { TLoginViewModel, userLoginAsync, userLogout } from "@/modeltypes/LoginModel"
 import { ResponseBodyEnum } from '@/modeltypes/ResponseModel';
 import { UserRoleEnum } from '@/modeltypes/UserModel';
 
@@ -36,7 +34,7 @@ const Model: TLoing = {
   effects: {
     // Two method successfull login: U/P, Token
     *login({ payload }, { call, put }) {
-      const response = yield call(userLoginAync, payload);
+      const response = yield call(userLoginAsync, payload);
       yield put({
         type: 'changeLoginStatus',
         payload: response,
@@ -44,6 +42,7 @@ const Model: TLoing = {
     },
 
     logout() {
+      userLogout();
       const { redirect } = getPageQuery();
       // Note: There may be security issues, please note
       if (window.location.pathname !== '/user/login' && !redirect) {
@@ -59,7 +58,7 @@ const Model: TLoing = {
 
   reducers: {
     changeLoginStatus(state, { payload }) {
-      payload.data != null ? setAuthority(payload.currentAuthority) : setAuthority(UserRoleEnum.None);
+      payload.data != null ? setAuthority(payload.data.currentAuthority) : setAuthority(UserRoleEnum.None);
       return {
         ...state,
         ...payload,

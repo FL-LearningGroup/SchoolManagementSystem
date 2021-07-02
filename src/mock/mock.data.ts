@@ -3,7 +3,7 @@ import { TUser, UserRoleEnum } from '../src/modeltypes/UserModel';
 
 type TUserModel = TUser & {
     userName: string;
-    passsword: string;
+    password: string;
 }
 
 export const userList:TUserModel[] =  [
@@ -45,7 +45,7 @@ export const userList:TUserModel[] =  [
         unreadCount: 11,
         country: 'China',
         userName: 'LucasYao',
-        passsword: '123456',
+        password: '123456',
         role: UserRoleEnum.Admin
     }
 ];

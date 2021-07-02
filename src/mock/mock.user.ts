@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
-import { waitTime } from './mock.common';
+import { fn as DateMoment } from 'moment';
 
+import { waitTime } from './mock.common';
 import { userList } from './mock.data'
 
 
@@ -38,15 +39,17 @@ export default {
     const { password, userName } = req.body;
     await waitTime(2000);
     userList.forEach(item => {
-      if (item.userName === userName && item.passsword === password)
+      if (item.userName === userName && item.password === password)
       {
         res.send({
           status: 'Ok',
-          message: 'login successfull.',
+          message: 'login successfully.',
           data: {
             currentAuthority: 'SchoolMaster',
             userName: item.userName,
             token: '0000000-00000-0000-000000',
+            createAt: '2021/07/01 15:00:00',
+            expiredAt: '2021/07/01 15:00:00',
           }
         });
         return;
@@ -54,7 +57,7 @@ export default {
     });
     res.send({
       status: 'Error',
-      message: 'Login falied',
+      message: 'Login failed',
       data: null
     });
   },

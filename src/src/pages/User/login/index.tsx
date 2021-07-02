@@ -41,6 +41,7 @@ const Login: React.FC<LoginProps> = (props) => {
   const [tokenLogin, setTokenLgin] = useState<boolean>(false);
   const intl = useIntl();
 
+  // Here is auto login logic. waiting to implemetion.
   useEffect(() => {
     if (!checkTokenData())
     {
