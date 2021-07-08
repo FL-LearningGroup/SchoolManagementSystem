@@ -8,7 +8,7 @@ import { getPageQuery } from '@/utils/utils';
 import { TLoginViewModel, userLoginAsync, userLogout } from "@/modeltypes/LoginModel"
 import { ResponseBodyEnum } from '@/modeltypes/ResponseModel';
 import { UserRoleEnum } from '@/modeltypes/UserModel';
-
+//import {consoleLog} from '@/utils/logger';
 
 export type TLoing = {
   namespace: string;
@@ -34,6 +34,9 @@ const Model: TLoing = {
   effects: {
     // Two method successfull login: U/P, Token
     *login({ payload }, { call, put }) {
+
+      //consoleLog(new Error(), JSON.stringify(payload));
+
       const response = yield call(userLoginAsync, payload);
       yield put({
         type: 'changeLoginStatus',

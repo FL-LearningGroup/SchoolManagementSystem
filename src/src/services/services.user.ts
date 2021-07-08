@@ -4,8 +4,11 @@ export async function query(): Promise<any> {
   return request('/api/users');
 }
 
-export async function queryCurrent(): Promise<any> {
-  return request('/api/currentUser');
+export async function queryUser(user: string): Promise<any> {
+  return request('/api/user/id', {
+    method: 'get',
+    params: {id: user}
+  });
 }
 
 export async function queryNotices(): Promise<any> {

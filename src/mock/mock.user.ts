@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
-import { fn as DateMoment } from 'moment';
+// How to use momentjs https://stackoverflow.com/questions/35272832/systemjs-moment-is-not-a-function
+import moment from 'moment'
 
 import { waitTime } from './mock.common';
 import { userList } from './mock.data'
@@ -13,7 +14,14 @@ async function getFakeCaptcha(req: Request, res: Response) {
 // 代码中会兼容本地 service mock 以及部署站点的静态数据
 export default {
   // 支持值为 Object 和 Array
-  'GET /api/currentUser': userList[0],
+  'GET /api/user/id': async (req: Request, res: Response) =>
+  {
+    const token = req.headers['authorization'];
+    console.log(new Error("Debug user token:\n\n" + JSON.stringify(token)));
+    if (token === "Bearer 0000000-00000-0000-000000")
+      res.send(userList[0]);
+    return [];
+  },
   // GET POST 可省略
   'GET /api/users': [
     {
@@ -48,8 +56,8 @@ export default {
             currentAuthority: 'SchoolMaster',
             userName: item.userName,
             token: '0000000-00000-0000-000000',
-            createAt: '2021/07/01 15:00:00',
-            expiredAt: '2021/07/01 15:00:00',
+            createAt: moment().format('YYYY/MM/DD HH:mm:ss'),
+            expiredAt: moment().add(7, 'd').format('YYYY/MM/DD HH:mm:ss'),
           }
         });
         return;

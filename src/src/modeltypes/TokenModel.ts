@@ -1,4 +1,14 @@
 import { UserRoleEnum } from './UserModel';
+import  GlobalVariable from './GlobalModel'
+
+export const sessionStorageType = 'session';
+export const localStorageType = 'local';
+
+function getStorageType(): Storage {
+    if (GlobalVariable.tokenStoargeType === sessionStorageType)
+    return window.sessionStorage;
+    return window.localStorage;
+}
 
 export const applicationTokenId: string = "school-management-system";
 
@@ -23,7 +33,8 @@ export type TToken = {
  * @returns Return ture if token exists, otherwise return false.
  */
 export function checkTokenData(): boolean {
-    return window.localStorage.getItem(applicationTokenId) === null ? false : true;
+
+    return  getStorageType().getItem(applicationTokenId) === null ? false : true;
 }
 
 /*
@@ -49,7 +60,7 @@ export function storageTokenData(tokenData: TTokenData): void {
     let token: TToken;
 
     // Try get token collection.
-    tokenJson = window.localStorage.getItem(applicationTokenId);
+    tokenJson = getStorageType().getItem(applicationTokenId);
 
     // token collection not exists in localStorage.
     if (tokenJson === null) {
@@ -57,7 +68,7 @@ export function storageTokenData(tokenData: TTokenData): void {
         token = {
             tokenData: [tokenData]
         };
-        window.localStorage.setItem(applicationTokenId, JSON.stringify(token));
+        getStorageType().setItem(applicationTokenId, JSON.stringify(token));
 
         // Function return.
         return;
@@ -75,7 +86,7 @@ export function storageTokenData(tokenData: TTokenData): void {
     });
 
     // Storgae token collection into the localStorage.
-    window.localStorage.setItem(applicationTokenId, JSON.stringify(token))  
+    getStorageType().setItem(applicationTokenId, JSON.stringify(token))  
 
     // Function return.
     return;
@@ -90,12 +101,12 @@ export function storageTokenData(tokenData: TTokenData): void {
 */
 /**
  * 
- * @param user identity of the user
+ * @param user identity of the user. if user = null, get first user.
  * @returns Return the tokendata of the specified user if user exists, otherwise return null.
  */
-export function getTokenData(user: string): TTokenData | null {
+export function getTokenData(user: string | null): TTokenData | null {
     // Get the token collection from the localStorage.
-    let tokenJson: string | null = window.localStorage.getItem(applicationTokenId);
+    let tokenJson: string | null = getStorageType().getItem(applicationTokenId);
 
     // Return null if the token collection no exists.
     if (tokenJson === null) return null;
@@ -103,12 +114,16 @@ export function getTokenData(user: string): TTokenData | null {
     let token: TToken = JSON.parse(tokenJson);
 
     // Get the tokendata of the specified user.
-    token.tokenData.forEach(item => {
-        if (item.user === user && (Date.parse(item.expiredAt) > Date.now())) {
-            return item;
-        }
-        return null;
-    });
+    if (user != null) {
+        token.tokenData.forEach(item => {
+            if (item.user === user && (Date.parse(item.expiredAt) > Date.now())) {
+                return item;
+            }
+            return null;
+        });
+    }
+    if (user === null && (Date.parse(token.tokenData[0].expiredAt) > Date.now()))
+        return token.tokenData[0];
 
     return null;
 }
@@ -117,7 +132,7 @@ export function getTokenData(user: string): TTokenData | null {
  * Clear the token collection.
  */
 export function clearTokenData(): void {
-    window.localStorage.removeItem(applicationTokenId);
+    getStorageType().removeItem(applicationTokenId);
 }
 
 /*
@@ -139,7 +154,7 @@ export function clearTokenData(): void {
  */
 export function removeTokenData(user: string): void {
     // Get JSON of the token collection.
-    let tokenJson: string | null = window.localStorage.getItem(applicationTokenId);
+    let tokenJson: string | null = getStorageType().getItem(applicationTokenId);
     
     if (tokenJson === null) return;
 
@@ -153,7 +168,7 @@ export function removeTokenData(user: string): void {
 
     // storage the updated token collection into the localStorage.
     token.tokenData = tokenData;
-    window.localStorage.setItem(applicationTokenId, JSON.stringify(token));
+    getStorageType().setItem(applicationTokenId, JSON.stringify(token));
     return;
 }
         

@@ -4,11 +4,13 @@ import { fakeAccountLogin } from '@/services/services.login';
 import { TResponseBody,ResponseBodyEnum } from './ResponseModel';
 import { getPageQuery } from '@/utils/utils';
 import { UserRoleEnum } from './UserModel';
-import { TTokenData, storageTokenData, checkTokenData, clearTokenData} from './TokenModel';
+import { TTokenData, storageTokenData, checkTokenData, clearTokenData, sessionStorageType} from './TokenModel';
+import GlobalVariable from './GlobalModel';
 
 export type TLoginParams = {
     userName: string;
     password: string;
+    autoLogin: boolean;
 };
 
 export type TLoginState = {
@@ -39,6 +41,10 @@ export async function userLoginAsync(loginParams: TLoginParams): Promise<TLoginV
     // Login successfull.
     if (response.status.toUpperCase() === ResponseBodyEnum.Ok.toUpperCase() && response.data != null) {
         
+        if (!loginParams.autoLogin) {
+            GlobalVariable.tokenStoargeType = sessionStorageType;
+        }
+
         // storage tokendata into localstorage.
         let tokenData: TTokenData = {
             user: loginParams.userName,
@@ -48,7 +54,7 @@ export async function userLoginAsync(loginParams: TLoginParams): Promise<TLoginV
             expiredAt: response.data.expiredAt,
             role: response.data.currentAuthority,
         };
-
+        console.log(new Error('Debug').message + '\n\n' + JSON.stringify(tokenData));
         // Important: Only support one user auto login.
         checkTokenData();
         storageTokenData(tokenData);

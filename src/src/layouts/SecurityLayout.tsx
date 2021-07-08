@@ -5,6 +5,7 @@ import { Redirect, connect } from 'umi';
 import { stringify } from 'querystring';
 import type { ConnectState } from '@/models/connect';
 import type { TUser } from '@/modeltypes/UserModel';
+import { getTokenData, TTokenData } from '@/modeltypes/TokenModel';
 
 type SecurityLayoutProps = {
   loading?: boolean;
@@ -13,34 +14,50 @@ type SecurityLayoutProps = {
 
 type SecurityLayoutState = {
   isReady: boolean;
+  user: string | null | undefined;
 };
 
 class SecurityLayout extends React.Component<SecurityLayoutProps, SecurityLayoutState> {
   state: SecurityLayoutState = {
     isReady: false,
+    user: null,
   };
 
   componentDidMount() {
     this.setState({
       isReady: true,
     });
+
+    let user = getTokenData(null)?.user;
+
+    console.log(new Error('Debug user var:').message + '\n\n' +  JSON.stringify(user));
+
     const { dispatch } = this.props;
     if (dispatch) {
       dispatch({
         type: 'user/fetchCurrent',
+        payload: {user},
       });
     }
   }
 
   render() {
+    const queryString = stringify({
+      redirect: window.location.href,
+    });
+    // Get user tokendata
+    let userToekn: TTokenData | null = getTokenData(null)
+    if ( userToekn == null) return <Redirect to={`/user/login?${queryString}`} />;
+    
+    console.log(new Error('Debug').message + '\n\n' + JSON.stringify(userToekn));
+    
+
     const { isReady } = this.state;
     const { children, loading, currentUser } = this.props;
     // You can replace it to your authentication rule (such as check token exists)
     // You can replace it with your own login authentication rules (such as judging whether the token exists)
     const isLogin = currentUser && currentUser.userid;
-    const queryString = stringify({
-      redirect: window.location.href,
-    });
+
 
     if ((!isLogin && loading) || !isReady) {
       return <PageLoading />;

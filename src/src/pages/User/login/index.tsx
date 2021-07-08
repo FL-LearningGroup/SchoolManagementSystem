@@ -10,7 +10,7 @@ import type { Dispatch } from 'umi';
 
 import  { TLoginParams, TLoginViewModel } from '@/modeltypes/LoginModel'
 import type { ConnectState } from '@/models/connect';
-import { checkTokenData } from '@/modeltypes/TokenModel';
+import { getTokenData } from '@/modeltypes/TokenModel';
 import { ResponseBodyEnum } from '@/modeltypes/ResponseModel';
 
 import styles from './index.less';
@@ -40,14 +40,15 @@ const Login: React.FC<LoginProps> = (props) => {
   const [type, setType] = useState<string>('account');
   const [tokenLogin, setTokenLgin] = useState<boolean>(false);
   const intl = useIntl();
-
+  
   // Here is auto login logic. waiting to implemetion.
   useEffect(() => {
-    if (!checkTokenData())
+    // Get user token data from the localStorage.
+    if (getTokenData(null) != null)
     {
+      setTokenLgin(true);
       return;
     }
-    setTokenLgin(true);
     
   });
   const handleSubmit = (values: TLoginParams) => {

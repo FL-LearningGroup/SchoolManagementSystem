@@ -1,6 +1,6 @@
 import type { Effect, Reducer } from 'umi';
 
-import { queryCurrent, query as queryUsers } from '@/services/services.user';
+import { queryUser, query as queryUsers } from '@/services/services.user';
 import { TUser } from '@/modeltypes/UserModel';
 
 export type TUserModelState = {
@@ -35,8 +35,9 @@ const UserModel: TUserViewModel = {
         payload: response,
       });
     },
-    *fetchCurrent(_, { call, put }) {
-      const response = yield call(queryCurrent);
+    *fetchCurrent({ payload }, { call, put }) {
+      console.log(new Error('Debug').message + '\n\n' + JSON.stringify(payload));
+      const response = yield call(queryUser, payload);
       yield put({
         type: 'saveCurrentUser',
         payload: response,

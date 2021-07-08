@@ -1,6 +1,7 @@
 /** Request 网络请求工具 更详细的 api 文档: https://github.com/umijs/umi-request */
 import { extend } from 'umi-request';
 import { notification } from 'antd';
+import {getTokenData} from '@/modeltypes/TokenModel';
 
 const codeMessage: Record<number, string> = {
   200: '服务器成功返回请求的数据。',
@@ -50,6 +51,9 @@ const errorHandler = (error: { response: Response }): Response => {
 const request = extend({
   errorHandler, // default error handling
   credentials: 'include', // Does the default request bring cookies
+  headers: {
+    'Authorization': 'Bearer ' + getTokenData(null)?.accessToken,
+  }
 });
 
 export default request;
